@@ -17,6 +17,7 @@ public class Main2 {
             throw new IllegalStateException("no sql connection");
         }
         ActorsRepository actorsRepository = new ActorsRepository(dataSource);
-        actorsRepository.saveActor("JackDoe");
+        //actorsRepository.saveActor("J");
+        System.out.println(actorsRepository.findActorsWithPrefix("J"));
     }
 }
