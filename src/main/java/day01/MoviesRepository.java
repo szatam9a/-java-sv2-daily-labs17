@@ -15,13 +15,20 @@ public class MoviesRepository {
         this.dataSource = dataSource;
     }
 
-    public void saveMovie(String title, LocalDate release_Date) {
+    public long saveMovie(String title, LocalDate release_Date) {
         try (Connection con = dataSource.getConnection(); PreparedStatement prep = con.prepareStatement(
-                "insert into movies (title,release_date) values(?,?)"
+                "insert into movies (title,release_date) values(?,?)", Statement.RETURN_GENERATED_KEYS
         )) {
             prep.setString(1, title);
             prep.setDate(2, Date.valueOf(release_Date));
             prep.executeUpdate();
+
+            try (ResultSet rs = prep.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+                throw new IllegalStateException("can not insert movie");
+            }
 
         } catch (SQLException sql) {
             throw new IllegalStateException("nosql");
