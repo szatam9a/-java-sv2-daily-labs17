@@ -1,0 +1,2 @@
+ALTER TABLE `movies`
+	ADD COLUMN `ratings_ave` FLOAT NULL DEFAULT NULL;

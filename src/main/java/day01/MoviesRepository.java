@@ -6,6 +6,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class MoviesRepository {
 
@@ -51,5 +52,22 @@ public class MoviesRepository {
             throw new IllegalStateException("Cannot query", throwables);
         }
         return result;
+    }
+
+    public Optional<Movie> findMovieByName(String name) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement("select * from movies where title=?")) {
+            statement.setString(1, name);
+
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return Optional.of(
+                        new Movie(rs.getLong("id"), rs.getString("title"), rs.getDate("release_Date").toLocalDate()));
+            }
+            return Optional.empty();
+
+        } catch (SQLException sql) {
+            throw new IllegalStateException("Cannot query movies by name" + sql);
+        }
     }
 }

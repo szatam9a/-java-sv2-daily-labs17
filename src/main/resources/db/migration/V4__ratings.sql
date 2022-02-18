@@ -1,0 +1,8 @@
+CREATE TABLE `ratings` (
+	`id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+	`movie_id` BIGINT(20) NOT NULL,
+	`rating` BIGINT(20) NOT NULL,
+	PRIMARY KEY (`id`) USING BTREE
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
